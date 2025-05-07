@@ -1,0 +1,29 @@
+.booking {
+    font-size: 0.8rem;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .status-ledig {
+    background-color: #0000ff;
+    color: white;
+  }
+  .status-pending {
+    background-color: #ffcc00;
+  }
+  .status-bokningsbar {
+    background-color: #ffa500;
+  }
+  .status-fullbokad {
+    background-color: #ff0000;
+    color: white;
+  }
+  
+  /* Colorblind-friendly indicators (optional) */
+  .status::after {
+    content: attr(data-status-symbol);
+    margin-left: 5px;
+    font-size: 0.7em;
+  }
+  
