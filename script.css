@@ -1,29 +1,20 @@
-.booking {
-    font-size: 0.8rem;
-    padding: 6px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .status-ledig {
-    background-color: #0000ff;
-    color: white;
-  }
-  .status-pending {
-    background-color: #ffcc00;
-  }
-  .status-bokningsbar {
-    background-color: #ffa500;
-  }
-  .status-fullbokad {
-    background-color: #ff0000;
-    color: white;
-  }
-  
-  /* Colorblind-friendly indicators (optional) */
-  .status::after {
-    content: attr(data-status-symbol);
-    margin-left: 5px;
-    font-size: 0.7em;
-  }
-  
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+.grid-cell {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.status-free { background-color: #4a90e2; color: white; }
+.status-pending { background-color: #f5a623; color: black; }
+.status-booked { background-color: #d0021b; color: white; }
+.status-unavailable { background-color: #9013fe; color: white; }
+
+/* For colorblind mode (alt patterns, optional) */
+.colorblind .status-free { background-image: repeating-linear-gradient(45deg, #4a90e2, #4a90e2 10px, #fff 10px, #fff 20px); }
