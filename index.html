@@ -1,13 +1,81 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Svenssons Hantverk AB</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
-    <script src="main.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVENSSONS´s HANTVERK AB</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app"></div>
+
+  <button class="home-button">HEM</button>
+  <header>
+    <h1>SVENSSONS´s HANTVERK AB</h1>
+    <p>BOKNING / SCHEMA - HANTVERKARE</p>
+  </header>
+
+  <section class="filter-section">
+    <input type="text" placeholder="Börja din sökning här">
+    <div class="filter-controls">
+      <label><input type="checkbox"> Elektriker</label>
+      <label><input type="checkbox"> Målare</label>
+      <label><input type="checkbox"> VVS</label>
+      <label><input type="checkbox"> Snickare</label>
+      <label><input type="checkbox"> Murare</label>
+      <div>
+        <label>Start <input type="date"></label>
+        <label>Slut <input type="date"></label>
+      </div>
+      <label><input type="radio" name="scope"> 50%</label>
+      <label><input type="radio" name="scope"> 100%</label>
+    </div>
+  </section>
+
+  <section class="legend">
+    <span class="legend-box free">Ledig</span>
+    <span class="legend-box pending">Pending</span>
+    <span class="legend-box bookable">Bokningsbar</span>
+    <span class="legend-box full">Fullbokad</span>
+  </section>
+
+  <section class="schedule">
+    <div class="schedule-header">
+      <div class="col-name">Hantverkare</div>
+      <div class="col-week">V.25</div>
+      <div class="col-week">V.26</div>
+      <div class="col-week">V.27</div>
+      <div class="col-week">V.28</div>
+    </div>
+
+    <!-- Example row -->
+    <div class="schedule-row">
+      <div class="col-name">
+        <strong>Anki D</strong><br>
+        <span>Snickare</span><br>
+        <span>Tel: 123 456 789</span>
+      </div>
+      <div class="col-week">
+        <div class="block full">100%</div>
+        <div class="block pending">50%</div>
+      </div>
+      <div class="col-week">
+        <div class="block bookable">0%</div>
+      </div>
+      <div class="col-week">
+        <div class="block full">100%</div>
+      </div>
+      <div class="col-week">
+        <div class="block free">Ledig</div>
+      </div>
+    </div>
+
+    <!-- Repeat .schedule-row for other workers -->
+
+  </section>
+
+  <footer>
+    <button class="export-button">EXPORT</button>
+  </footer>
+
 </body>
 </html>
