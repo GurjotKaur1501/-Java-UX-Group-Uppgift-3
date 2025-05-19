@@ -1,125 +1,111 @@
 body {
   font-family: Arial, sans-serif;
+  background: white;
   margin: 0;
-  padding: 20px;
-  background: #fff;
-  color: #000;
+  padding: 0;
 }
 
 header {
-  text-align: center;
-  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center;
   padding: 1rem;
+  border-bottom: 2px solid black;
 }
 
-h1 {
-  text-align: center;
+.home-btn {
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
 }
 
-.home-button {
-  position: absolute;
-  margin: 10px;
-  padding: 5px 10px;
+.title h1 {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-.filter-section {
-  padding: 10px;
-  background: #f1f1f1;
+.title h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: gray;
+}
+
+.search-filter {
+  padding: 1rem;
   border-bottom: 1px solid #ccc;
 }
 
-.filter-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.legend {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  font-size: 14px;
-}
-
-.legend-box {
-  padding: 5px 10px;
-  border-radius: 3px;
-  color: white;
-}
-
-.legend-box.free,
-.day.free,
-.block.free { 
-  background-color: blue; 
-}
-
-.legend-box.pending,
-.day.pending,
-.block.pending { 
-  background-color: orange; 
-}
-
-.legend-box.bookable,
-.day.bookable,
-.block.bookable { 
-  background-color: yellow; 
-  color: black; 
-}
-
-.legend-box.full,
-.day.full,
-.block.full { 
-  background-color: red; 
-}
-
-.schedule {
+.search-filter input[type="text"] {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.schedule-header,
-.schedule-row {
-  display: flex;
-  border: 1px solid #ccc;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
+.filters label {
+  margin-right: 10px;
 }
 
-.col-name {
-  flex: 1;
-  padding: 10px;
-  border-right: 1px solid #ccc;
-  background: #f0f0f0;
-}
-
-.col-week {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  border-left: 1px solid #ddd;
-}
-
-.week-label {
+.grid-header {
+  display: grid;
+  grid-template-columns: 200px repeat(4, 1fr);
+  background: #eee;
   font-weight: bold;
-  margin-bottom: 5px;
+  padding: 0.5rem;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
-.block,
-.day {
-  margin: 2px 0;
-  padding: 4px;
+.grid-body .row {
+  display: grid;
+  grid-template-columns: 200px repeat(4, 1fr);
+  border-bottom: 1px solid #ccc;
+}
+
+.craftsman-info {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.booking-blocks {
+  display: contents;
+}
+
+.block {
+  padding: 1rem;
   text-align: center;
-  font-size: 12px;
+  font-weight: bold;
   color: #fff;
-  border-radius: 4px;
 }
 
-.export-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-weight: bold;
+/* Booking Types */
+.available {
+  background-color: #3366ff; /* Blue */
+}
+
+.pending {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+.booked-50 {
+  background-color: #ff9800;
+}
+
+.booked-100 {
+  background-color: #f44336;
+}
+
+.absent {
+  background-color: #9c27b0;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.export {
+  margin-left: auto;
+  padding: 0.5rem 1rem;
 }
