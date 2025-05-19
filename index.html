@@ -1,73 +1,54 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SVENSSONS´s HANTVERK AB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Svenssons Hantverk AB</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
 </head>
 <body>
   <div id="app">
     <header>
-      <button class="home-btn">HEM</button>
-      <div class="title">
-        <h1>SVENSSONS´s HANTVERK AB</h1>
-        <h2>BOKNING / SCHEMA – HANTVERKARE</h2>
-      </div>
+      <h1>SVENSSONS's HANTVERK AB</h1>
+      <h3>BOKNING / SCHEMA - HANTVERKARE</h3>
     </header>
 
-    <div class="search-filter">
-      <input type="text" v-model="search" placeholder="Börja din sökning här" />
-      <div class="filters">
-        <strong>FILTERERING</strong>
-        <div>
-          <label v-for="type in professions" :key="type">
-            <input type="checkbox" v-model="selectedProfessions" :value="type" />
-            {{ type }}
-          </label>
-        </div>
-        <div>
-          <label>Start: <input type="week" v-model="startWeek" /></label>
-          <label>Slut: <input type="week" v-model="endWeek" /></label>
-        </div>
-        <div>
-          <label><input type="checkbox" v-model="selectedLoad" value="50" /> 50%</label>
-          <label><input type="checkbox" v-model="selectedLoad" value="100" /> 100%</label>
-        </div>
+    <div class="filters">
+      <div>
+        <label><input type="checkbox" value="Elektriker" v-model="selectedProfessions"> Elektriker</label>
+        <label><input type="checkbox" value="Målare" v-model="selectedProfessions"> Målare</label>
+        <label><input type="checkbox" value="VVS" v-model="selectedProfessions"> VVS</label>
+        <label><input type="checkbox" value="Snickare" v-model="selectedProfessions"> Snickare</label>
+        <label><input type="checkbox" value="Murare" v-model="selectedProfessions"> Murare</label>
       </div>
     </div>
 
-    <div class="grid-header">
-      <span class="header-name">Hantverkare</span>
-      <span v-for="n in 4" class="week-label">V.{{ currentWeek + n }}</span>
+    <div class="legend">
+      <span class="ledig"></span> Ledig
+      <span class="pending"></span> Pending
+      <span class="bokningsbar"></span> Bokningsbar
+      <span class="fullbokad"></span> Fullbokad
     </div>
 
-    <div class="grid-body">
-      <div class="row" v-for="craftsman in filteredCraftsmen" :key="craftsman.name">
-        <div class="craftsman-info">
-          <strong>{{ craftsman.name }}</strong><br />
-          <span>{{ craftsman.profession }}</span><br />
-          <small>{{ craftsman.phone }}</small>
-        </div>
-        <div class="booking-blocks">
-          <div
-            v-for="offset in 4"
-            :key="offset"
-            :class="['block', getStatusClass(craftsman.name, currentWeek + offset)]"
-            :title="getStatusTooltip(craftsman.name, currentWeek + offset)"
-          >
-            {{ getStatusText(craftsman.name, currentWeek + offset) }}
-          </div>
-        </div>
-      </div>
+    <div class="schedule">
+      <table>
+        <thead>
+          <tr>
+            <th>Hantverkare</th>
+            <th v-for="week in weeks" :key="week">V.{{ week }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="worker in filteredWorkers" :key="worker.name">
+            <td>{{ worker.name }}<br><small>{{ worker.profession }}</small></td>
+            <td v-for="week in weeks" :key="week">
+              <div :class="worker.schedule[week]">{{ worker.schedule[week] }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <footer>
-      <button @click="prevWeek">&lt;</button>
-      <span>VECKOÖVERSIKT</span>
-      <button @click="nextWeek">&gt;</button>
-      <button class="export">EXPORT</button>
-    </footer>
   </div>
 
   <script src="app.js"></script>

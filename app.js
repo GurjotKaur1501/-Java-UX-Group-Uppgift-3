@@ -3,68 +3,46 @@ const { createApp } = Vue;
 createApp({
   data() {
     return {
-      bookings: [],
-      craftsmen: [],
-      currentWeek: 24,
-      search: '',
-      professions: ['Elektriker', 'Målare', 'VVS', 'Snickare', 'Murare'],
       selectedProfessions: [],
-      selectedLoad: [],
-      startWeek: '',
-      endWeek: '',
+      weeks: [25, 26, 27, 28],
+      workers: []
     };
   },
   computed: {
-    filteredCraftsmen() {
-      return this.craftsmen.filter(c => {
-        const matchesName = c.name.toLowerCase().includes(this.search.toLowerCase());
-        const matchesProfession =
-          this.selectedProfessions.length === 0 || this.selectedProfessions.includes(c.profession);
-        return matchesName && matchesProfession;
-      });
+    filteredWorkers() {
+      if (this.selectedProfessions.length === 0) return this.workers;
+      return this.workers.filter(worker =>
+        this.selectedProfessions.includes(worker.profession)
+      );
     }
   },
   methods: {
-    async fetchData() {
-      const res = await fetch('https://yrgo-web-services.netlify.app/bookings');
-      this.bookings = await res.json();
+    async fetchBookings() {
+      try {
+        const response = await fetch('https://yrgo-web-services.netlify.app/bookings');
+        const data = await response.json();
 
-      // Dummy profession/phone assignment
-      const names = [...new Set(this.bookings.map(b => b.name))];
-      this.craftsmen = names.map((name, index) => ({
-        name,
-        profession: this.professions[index % this.professions.length],
-        phone: 'Tel: 070-1111111'
-      }));
-    },
-    getStatusClass(name, week) {
-      const entry = this.bookings.find(b => b.name === name && b.week === week);
-      if (!entry) return 'available';
-      if (entry.type === 'Frånvaro') return 'absent';
-      if (entry.type === 'Preliminärt bokad') return 'pending';
-      if (entry.type === 'Bokad') {
-        return entry.allocation === 50 ? 'booked-50' : 'booked-100';
+        const grouped = {};
+
+        data.forEach(entry => {
+          const { name, profession, week, status } = entry;
+          if (!grouped[name]) {
+            grouped[name] = {
+              name,
+              profession,
+              schedule: {}
+            };
+          }
+          grouped[name].schedule[week] = status;
+        });
+
+        this.workers = Object.values(grouped);
+      } catch (error) {
+        console.error('Failed to load bookings:', error);
       }
-      return 'available';
-    },
-    getStatusTooltip(name, week) {
-      const entry = this.bookings.find(b => b.name === name && b.week === week);
-      if (!entry) return 'Ledig';
-      return `${entry.type}, ${entry.allocation}%`;
-    },
-    getStatusText(name, week) {
-      const entry = this.bookings.find(b => b.name === name && b.week === week);
-      if (!entry) return 'Ledig';
-      return `${entry.allocation}%`;
-    },
-    nextWeek() {
-      this.currentWeek += 1;
-    },
-    prevWeek() {
-      this.currentWeek = Math.max(this.currentWeek - 1, 0);
     }
   },
   mounted() {
-    this.fetchData();
+    this.fetchBookings();
   }
-}).mount('#app');
+}).mount("#app");
