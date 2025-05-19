@@ -15,12 +15,21 @@
     </header>
 
     <div class="filters">
-      <div>
+      <input type="text" v-model="searchQuery" placeholder="Börja din sökning här" />
+      <div class="filter-group">
         <label><input type="checkbox" value="Elektriker" v-model="selectedProfessions"> Elektriker</label>
         <label><input type="checkbox" value="Målare" v-model="selectedProfessions"> Målare</label>
         <label><input type="checkbox" value="VVS" v-model="selectedProfessions"> VVS</label>
         <label><input type="checkbox" value="Snickare" v-model="selectedProfessions"> Snickare</label>
         <label><input type="checkbox" value="Murare" v-model="selectedProfessions"> Murare</label>
+      </div>
+      <div class="date-filter">
+        <label>Start <input type="date" v-model="startDate"></label>
+        <label>Slut <input type="date" v-model="endDate"></label>
+      </div>
+      <div class="extent-filter">
+        <label><input type="radio" value="50" v-model="extent"> 50%</label>
+        <label><input type="radio" value="100" v-model="extent"> 100%</label>
       </div>
     </div>
 
@@ -36,15 +45,30 @@
         <thead>
           <tr>
             <th>Hantverkare</th>
-            <th v-for="week in weeks" :key="week">V.{{ week }}</th>
+            <th v-for="week in weeks" :key="week" colspan="7">V.{{ week }}</th>
+          </tr>
+          <tr>
+            <th></th>
+            <template v-for="week in weeks">
+              <th v-for="day in 7">{{ getDayLabel(day) }}</th>
+            </template>
           </tr>
         </thead>
         <tbody>
           <tr v-for="worker in filteredWorkers" :key="worker.name">
-            <td>{{ worker.name }}<br><small>{{ worker.profession }}</small></td>
-            <td v-for="week in weeks" :key="week">
-              <div :class="worker.schedule[week]">{{ worker.schedule[week] }}</div>
+            <td>
+              {{ worker.name }}<br>
+              <small>{{ worker.profession }}</small><br>
+              <small>{{ worker.phone }}</small>
             </td>
+            <template v-for="week in weeks">
+              <td v-for="day in 7">
+                <div :class="getStatusClass(worker.schedule[`${week}-${day}`]?.status)">
+                  {{ worker.schedule[`${week}-${day}`]?.status || '' }}<br>
+                  <small>{{ worker.schedule[`${week}-${day}`]?.percent || '' }}%</small>
+                </div>
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>
