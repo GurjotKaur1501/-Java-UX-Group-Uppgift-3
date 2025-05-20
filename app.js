@@ -11,6 +11,8 @@ createApp({
     const selectedScopes = ref(['50', '100']);
     const startDateInput = ref('');
     const endDateInput = ref('');
+    const selectedStates = ref(['Absent', 'Preliminary', 'Booked', '']);
+    const selectedChangeState = ref(['Absent', 'Preliminary', 'Booked', '']);
 
     const allDates = computed(() => {
       const dates = [];
@@ -45,13 +47,20 @@ createApp({
         const matchesScope =
           selectedScopes.value.length === 0 ||
           selectedScopes.value.includes(String(b.percentage));
+        const matchesState =
+          selectedStates.value.includes(String(b.type));
         const date = new Date(b.date);
         const start = startDateInput.value ? new Date(startDateInput.value) : null;
         const end = endDateInput.value ? new Date(endDateInput.value) : null;
         const matchesDate = (!start || date >= start) && (!end || date <= end);
-        return matchesProfession && matchesScope && matchesDate;
+        return matchesProfession && matchesScope && matchesState && matchesDate;
       });
     });
+
+    const holder = computed(() => {const d = toDateString(date);
+    const booking = filteredBookings.value.find(
+    b => b.workerId === workerId && b.date === d);
+    return booking});
 
     const filteredExported = computed(() => filteredBookings.value);
 
@@ -72,8 +81,7 @@ createApp({
       const { type, percentage } = booking;
       if (type === 'Absent') return 'franvaro';
       if (type === 'Booked') return percentage === 100 ? 'bokad-full' : 'bokad-half';
-      if (type === 'Preliminary') return percentage === 100 ? 'prelim-full' : 'prelim-half';
-      return 'ledig';
+      if (type === 'Preliminary') return 'prelim';
     }
 
     function toDateString(date) {
@@ -90,6 +98,21 @@ createApp({
       d.setUTCDate(d.getUTCDate() + 4 - dayNum);
       const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
       return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+    }
+
+    function show(workerId, date) {
+      const display = document.getElementById('changer');
+      display.classList.toggle('hidden');
+      applier(workerId, date);
+    }
+
+    function applier(){
+      const booking = holder;
+      for (const element of selectedChangeState) {
+        if (element == true) {
+          return element
+        }
+      }
     }
 
     async function fetchData() {
@@ -142,8 +165,10 @@ createApp({
       selectedScopes,
       startDateInput,
       endDateInput,
+      selectedStates,
       filteredDays,
       filteredWorkers,
+      show,
       getWeekday,
       getWeekNumber,
       getPercentage,

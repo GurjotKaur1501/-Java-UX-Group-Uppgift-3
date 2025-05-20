@@ -21,7 +21,7 @@
         </label>
       </div>
       <div>
-        <label><strong>Job period start:</strong> <input type="date" v-model="startDateInput" /></label>
+        <label><strong>Job period</strong> Start: <input type="date" v-model="startDateInput" /></label>
         <label>End: <input type="date" v-model="endDateInput" /></label>
       </div>
       <div>
@@ -29,9 +29,22 @@
         <label><input type="checkbox" value="50" v-model="selectedScopes" /> 50%</label>
         <label><input type="checkbox" value="100" v-model="selectedScopes" /> 100%</label>
       </div>
+      <div>
+        <label style="background-color: #d32f2f;"><input type="checkbox" value="Absent" v-model="selectedStates"/> Frånvaro</label>
+        <label style="background-color: #fff176;"><input type="checkbox" value="Preliminary" v-model="selectedStates"/> Preliminärt bokad</label>
+        <label style="background-color: #512da8;"><input type="checkbox" value="Booked" v-model="selectedStates"/> Bokad</label>
+        <label style="background-color: #64b5f6;"><input type="checkbox" value="" v-model="selectedStates"/> Ledig</label>
+      </div>
     </div>
 
     <!-- Booking Table -->
+     <div id="changer"class="bookingChange">
+      <label><input type="radio" value="franvaro" name="status" v-model="SelectedChangeState">Frånvaro</label>
+      <label><input type="radio" value="prelim" name="status" v-model="SelectedChangeState">Preliminärt bokad</label>
+      <label><input type="radio" value="bokad-full" name="status" v-model="SelectedChangeState">Bokad</label>
+      <label><input type="radio" value="ledig" name="status" v-model="SelectedChangeState">Ledig</label>
+      <label><input type="button" value="apply" @click="applier"></label>
+     </div>
     <table class="calendar-table">
       <thead>
         <tr>
@@ -42,12 +55,13 @@
       <tbody>
         <tr v-for="worker in filteredWorkers" :key="worker.id">
           <td>{{ worker.name }}<br><small>{{ worker.profession }}</small></td>
-          <td
+          <td style="padding: 0;"
             v-for="date in filteredDays"
             :key="date"
             :class="['cell', getCellClass(worker.id, date)]"
+            @click="show(worker.id, date)"
           >
-            {{ getPercentage(worker.id, date) }}
+          {{ getPercentage(worker.id, date) }}
           </td>
         </tr>
       </tbody>
