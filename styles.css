@@ -1,0 +1,107 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.filter-panel {
+  background: #f2f2f2;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.filter-panel label {
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.calendar-table th,
+.calendar-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+  font-size: 13px;
+  min-width: 70px;
+}
+
+.cell {
+  font-weight: bold;
+}
+
+.export-btn {
+  margin-top: 10px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  float: right;
+  cursor: pointer;
+}
+
+.export-output {
+  clear: both;
+  margin-top: 50px;
+}
+
+.export-output table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.export-output th,
+.export-output td {
+  border: 1px solid #999;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Booking colors */
+.franvaro {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.bokad-full {
+  background-color: #512da8;
+  color: white;
+}
+
+.bokad-half {
+  background-color: #9575cd;
+  color: white;
+}
+
+.prelim-full {
+  background-color: #fbc02d;
+  color: black;
+}
+
+.prelim-half {
+  background-color: #fff176;
+  color: black;
+}
+
+.ledig {
+  background-color: #64b5f6;
+  color: white;
+}

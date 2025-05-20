@@ -2,79 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>SVENSSONS's CRAFTSMEN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Svenssons Hantverk AB</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
 <body>
   <div id="app">
-    <header>
-      <h1>SVENSSONS's HANTVERK AB</h1>
-      <h3>BOKNING / SCHEMA - HANTVERKARE</h3>
-    </header>
+    <h1>SVENSSONS's CRAFTSMEN</h1>
+    <h2>BOOKING / SCHEDULE – CRAFTSMEN</h2>
 
-    <div class="filters">
-      <input type="text" v-model="searchQuery" placeholder="Börja din sökning här" />
-      <div class="filter-group">
-        <label><input type="checkbox" value="Elektriker" v-model="selectedProfessions"> Elektriker</label>
-        <label><input type="checkbox" value="Målare" v-model="selectedProfessions"> Målare</label>
-        <label><input type="checkbox" value="VVS" v-model="selectedProfessions"> VVS</label>
-        <label><input type="checkbox" value="Snickare" v-model="selectedProfessions"> Snickare</label>
-        <label><input type="checkbox" value="Murare" v-model="selectedProfessions"> Murare</label>
+    <!-- Filter Panel -->
+    <div class="filter-panel">
+      <div>
+        <label><strong>Profession:</strong></label>
+        <label v-for="p in allProfessions">
+          <input type="checkbox" v-model="selectedProfessions" :value="p" /> {{ p }}
+        </label>
       </div>
-      <div class="date-filter">
-        <label>Start <input type="date" v-model="startDate"></label>
-        <label>Slut <input type="date" v-model="endDate"></label>
+      <div>
+        <label><strong>Job period start:</strong> <input type="date" v-model="startDateInput" /></label>
+        <label>End: <input type="date" v-model="endDateInput" /></label>
       </div>
-      <div class="extent-filter">
-        <label><input type="radio" value="50" v-model="extent"> 50%</label>
-        <label><input type="radio" value="100" v-model="extent"> 100%</label>
+      <div>
+        <label><strong>Booking Scope:</strong></label>
+        <label><input type="checkbox" value="50" v-model="selectedScopes" /> 50%</label>
+        <label><input type="checkbox" value="100" v-model="selectedScopes" /> 100%</label>
       </div>
     </div>
 
-    <div class="legend">
-      <span class="ledig"></span> Ledig
-      <span class="pending"></span> Pending
-      <span class="bokningsbar"></span> Bokningsbar
-      <span class="fullbokad"></span> Fullbokad
-    </div>
+    <!-- Booking Table -->
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th>Craftsman</th>
+          <th v-for="date in filteredDays">{{ getWeekday(date) }}<br>W{{ getWeekNumber(date) }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="worker in filteredWorkers" :key="worker.id">
+          <td>{{ worker.name }}<br><small>{{ worker.profession }}</small></td>
+          <td
+            v-for="date in filteredDays"
+            :key="date"
+            :class="['cell', getCellClass(worker.id, date)]"
+          >
+            {{ getPercentage(worker.id, date) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="schedule">
+    <button class="export-btn" @click="showExport = !showExport">
+      {{ showExport ? 'Hide Export' : 'EXPORT' }}
+    </button>
+
+    <div v-if="showExport" class="export-output">
+      <h3>Exported Data:</h3>
       <table>
         <thead>
           <tr>
-            <th>Hantverkare</th>
-            <th v-for="week in weeks" :key="week" colspan="7">V.{{ week }}</th>
-          </tr>
-          <tr>
-            <th></th>
-            <template v-for="week in weeks">
-              <th v-for="day in 7">{{ getDayLabel(day) }}</th>
-            </template>
+            <th>Craftsman</th>
+            <th>Date</th>
+            <th>Week</th>
+            <th>Scope</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="worker in filteredWorkers" :key="worker.name">
-            <td>
-              {{ worker.name }}<br>
-              <small>{{ worker.profession }}</small><br>
-              <small>{{ worker.phone }}</small>
-            </td>
-            <template v-for="week in weeks">
-              <td v-for="day in 7">
-                <div :class="getStatusClass(worker.schedule[`${week}-${day}`]?.status)">
-                  {{ worker.schedule[`${week}-${day}`]?.status || '' }}<br>
-                  <small>{{ worker.schedule[`${week}-${day}`]?.percent || '' }}%</small>
-                </div>
-              </td>
-            </template>
+          <tr v-for="item in filteredExported" :key="item.workerId + item.date">
+            <td>{{ item.name }}</td>
+            <td>{{ item.date }}</td>
+            <td>W{{ item.week }}</td>
+            <td>{{ item.percentage }}%</td>
+            <td>{{ item.type }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
 
-  <script src="app.js"></script>
+    <script src="app.js"></script>
+  </div>
 </body>
 </html>
